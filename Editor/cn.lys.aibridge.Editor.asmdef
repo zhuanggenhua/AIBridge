@@ -1,9 +1,7 @@
 {
     "name": "cn.lys.aibridge.Editor",
     "rootNamespace": "AIBridge.Editor",
-    "references": [
-        "Newtonsoft.Json"
-    ],
+    "references": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -11,6 +9,7 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
+        "Newtonsoft.Json.dll",
         "Microsoft.CodeAnalysis.CSharp.dll",
         "Microsoft.CodeAnalysis.dll",
         "System.Collections.Immutable.dll",

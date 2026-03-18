@@ -51,7 +51,7 @@ File-based communication framework between AI Code assistants and Unity Editor.
 For local development, point your Unity project's `Packages/manifest.json` to a sibling checkout:
 
 ```json
-"cn.lys.aibridge": "file:../AIBridge"
+"cn.lys.aibridge": "file:../../AIBridge"
 ```
 
 For a stable Unity 2021.3 line from Git, use:

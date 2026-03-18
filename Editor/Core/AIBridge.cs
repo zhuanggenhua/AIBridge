@@ -94,11 +94,33 @@ namespace AIBridge.Editor
         /// </summary>
         private static string FindPackageRoot()
         {
-            // Try local package first: Packages/AIBridge
-            var localPath = Path.Combine(ProjectRoot, "Packages", "AIBridge");
-            if (Directory.Exists(localPath))
+            // Prefer Unity Package Manager's resolved path. This supports local file packages,
+            // embedded packages, and packages restored under PackageCache.
+            var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/cn.lys.aibridge");
+            if (packageInfo != null && Directory.Exists(packageInfo.resolvedPath))
             {
-                return localPath;
+                return packageInfo.resolvedPath;
+            }
+
+            packageInfo = UnityEditor.PackageManager.PackageInfo.FindForAssetPath("Packages/AIBridge");
+            if (packageInfo != null && Directory.Exists(packageInfo.resolvedPath))
+            {
+                return packageInfo.resolvedPath;
+            }
+
+            // Try embedded package paths under the project.
+            var embeddedPaths = new[]
+            {
+                Path.Combine(ProjectRoot, "Packages", "cn.lys.aibridge"),
+                Path.Combine(ProjectRoot, "Packages", "AIBridge")
+            };
+
+            foreach (var embeddedPath in embeddedPaths)
+            {
+                if (Directory.Exists(embeddedPath))
+                {
+                    return embeddedPath;
+                }
             }
 
             // Try PackageCache: Library/PackageCache/cn.lys.aibridge@*
@@ -113,7 +135,7 @@ namespace AIBridge.Editor
             }
 
             AIBridgeLogger.LogWarning("AIBridge package root not found, using fallback path");
-            return localPath; // Fallback
+            return embeddedPaths[0];
         }
 
         /// <summary>
